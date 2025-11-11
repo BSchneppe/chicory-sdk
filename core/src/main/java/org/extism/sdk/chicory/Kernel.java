@@ -68,7 +68,8 @@ public class Kernel {
         memoryBytes = kernel.export("memory_bytes");
     }
 
-    private static Instance instance(Function<Instance, Machine> machineFactory, MemoryLimits memoryLimits) {
+    private static Instance instance(Function<Instance, Machine> machineFactory,
+        MemoryLimits memoryLimits) {
         var kernelStream = Kernel.class.getClassLoader().getResourceAsStream("extism-runtime.wasm");
         WasmModule module = Parser.parse(kernelStream);
         if (machineFactory != null && machineFactory instanceof CachedAotMachineFactory) {

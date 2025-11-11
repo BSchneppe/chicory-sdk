@@ -77,11 +77,9 @@ public class PluginTest extends TestCase {
         }
     }
 
-    public void testFailingMemoryHog()
-        throws IOException, NoSuchFieldException, IllegalAccessException {
-        byte[] bytes =
-            PluginTest.class.getClassLoader().getResourceAsStream("memory-leaker/memory-leaker.wasm")
-                .readAllBytes();
+    public void testFailingMemoryHog() throws IOException {
+        byte[] bytes = PluginTest.class.getClassLoader()
+            .getResourceAsStream("memory-leaker/memory-leaker.wasm").readAllBytes();
         var wasm = ManifestWasm.fromBytes(bytes).build();
         int memorySize = 1 << 8;
         var manifest = Manifest.ofWasms(wasm).withOptions(
@@ -94,8 +92,8 @@ public class PluginTest extends TestCase {
             plugin.call("leak", new byte[0]);
         } catch (ExtismFunctionException ex) {
             assertTrue(ex.getMessage().contains("out of memory"));
-            assertEquals(memorySize,plugin.memory().memory().initialPages());
-            assertEquals(memorySize,plugin.memory().memory().maximumPages());
+            assertEquals(memorySize, plugin.memory().memory().initialPages());
+            assertEquals(memorySize, plugin.memory().memory().maximumPages());
         }
 
     }
